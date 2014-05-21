@@ -10,6 +10,7 @@ from sysml import *
 from splines import *
 
 
+
 DRAW = COMP([VIEW,STRUCT,MKPOLS])
 
 
@@ -25,7 +26,7 @@ hpcSalotto = cellNumbering (diagramSalotto,hpcSalotto)(range(len(CVSalotto)),CYA
 #PORTA SALOTTO
 toMergeSal = 11
 
-diagramDoorSal2 = assemblyDiagramInit([3,1,2])([[4,1.5,2],[.5],[2.2,.5]])
+diagramDoorSal2 = assemblyDiagramInit([3,1,2])([[4.2,1.5,2],[.5],[2.2,.5]])
 masterSal = diagram2cell(diagramDoorSal2,diagramSalotto,toMergeSal)
 hpcSal = SKEL_1(STRUCT(MKPOLS(masterSal)))
 hpcSal = cellNumbering (masterSal,hpcSal)(range(len(masterSal[1])),CYAN,2)
@@ -53,6 +54,7 @@ masterWinSal2 = masterWinSal2[0], [cell for k,cell in enumerate(masterWinSal2[1]
 
 #DRAW(masterWinSal2)
 
+
 #CUCINA
 diagramCucina = assemblyDiagramInit([3,3,2])([[.3,4,.1],[.1,3,.1],[.3,2.7]])
 hpcCucina = SKEL_1(STRUCT(MKPOLS(diagramCucina)))
@@ -62,13 +64,24 @@ hpcCucina = cellNumbering(diagramCucina,hpcCucina)(range(len(CVCucina)),CYAN,2)
 
 #PORTA CUCINA
 toMergeCucina = 15
-diagramDoorCucina = assemblyDiagramInit([1,3,2])([[.5],[.5,1,1.5],[2.2,.1]])
+diagramDoorCucina = assemblyDiagramInit([1,3,2])([[.5],[.5,1,1.5],[2.2,.5]])
 masterCucina = diagram2cell(diagramDoorCucina,diagramCucina,toMergeCucina)
 hpcCuc = SKEL_1(STRUCT(MKPOLS(masterCucina)))
 hpcCuc = cellNumbering (masterCucina,hpcCuc)(range(len(masterCucina[1])),CYAN,2)
-toRemoveCucina = [19,9]
-masterCucina = masterCucina[0], [cell for k,cell in enumerate(masterCucina[1]) if not (k in toRemoveCucina)]
+#VIEW(hpcCuc)
 
+toMergeCucina = 11
+diagramDoorCucina = assemblyDiagramInit([3,1,2])([[.2,1,2.8],[.5],[2.2,.5]])
+masterCucina = diagram2cell(diagramDoorCucina,masterCucina,toMergeCucina)
+hpcCuc = SKEL_1(STRUCT(MKPOLS(masterCucina)))
+hpcCuc = cellNumbering (masterCucina,hpcCuc)(range(len(masterCucina[1])),CYAN,2)
+
+#VIEW(hpcCuc2)
+
+
+toRemoveCucina = [24,18,9]
+masterCucina = masterCucina[0], [cell for k,cell in enumerate(masterCucina[1]) if not (k in toRemoveCucina)]
+#DRAW(masterCucina)
 
 #FINESTRE CUCINA
 toMergeWinCucina = 3
@@ -76,11 +89,9 @@ diagramWinCucina = assemblyDiagramInit([1,5,3])([[.3],[1.5,0.9,.2,.9,1.5],[1,1.4
 masterWinCucina = diagram2cell(diagramWinCucina,masterCucina,toMergeWinCucina)
 hpcWinCucina = SKEL_1(STRUCT(MKPOLS(masterWinCucina)))
 hpcWinCucina = cellNumbering (masterWinCucina,hpcWinCucina)(range(len(masterWinCucina[1])),CYAN,2)
-toRemoveWinCucina = [24,30]
+#VIEW(hpcWinCucina)
+toRemoveWinCucina = [28,34]
 masterWinCucina = masterWinCucina[0], [cell for k,cell in enumerate(masterWinCucina[1]) if not (k in toRemoveWinCucina)]
-
-
-
 #DRAW(masterWinCucina)
 
 
@@ -88,8 +99,7 @@ masterWinCucina = masterWinCucina[0], [cell for k,cell in enumerate(masterWinCuc
 
 #CAMERA1
 
-
-diagramCamera1 = assemblyDiagramInit([3,3,2])([[.1,4,.1],[.3,5,.1],[.3,2.7]])
+diagramCamera1 = assemblyDiagramInit([3,3,2])([[.1,4,.3],[.3,5,.1],[.3,2.7]])
 hpcCamera1 = SKEL_1(STRUCT(MKPOLS(diagramCamera1)))
 VCamera1,CVCamera1 = diagramCamera1
 hpcCamera1 = cellNumbering (diagramCamera1,hpcCamera1)(range(len(CVCamera1)),CYAN,2)
@@ -97,7 +107,7 @@ hpcCamera1 = cellNumbering (diagramCamera1,hpcCamera1)(range(len(CVCamera1)),CYA
 #PORTA CAMERA 1
 
 toMergeCam1 = 11
-diagramDoorCam1 = assemblyDiagramInit([3,1,2])([[.2,.5,2.8],[.1],[2.2,.5]])
+diagramDoorCam1 = assemblyDiagramInit([3,1,2])([[.01,.8,2.8],[.1],[2.2,.5]])
 masterCam1 = diagram2cell(diagramDoorCam1,diagramCamera1,toMergeCam1)
 hpcCam1 = SKEL_1(STRUCT(MKPOLS(masterCam1)))
 hpcCam1 = cellNumbering (masterCam1,hpcCam1)(range(len(masterCam1[1])),CYAN,2)
@@ -162,7 +172,7 @@ hpcBagno1 = cellNumbering (diagramBagno1,hpcBagno1)(range(len(CVBagno1)),CYAN,2)
 
 #PORTA BAGNO1
 toMergeBagno1 = 7
-diagramDoorBagno1 = assemblyDiagramInit([3,1,2])([[1.5,1,1.5],[.1],[2.2,.1]])
+diagramDoorBagno1 = assemblyDiagramInit([3,1,2])([[1.5,1,1.5],[.1],[2.2,.5]])
 masterBagno1 = diagram2cell(diagramDoorBagno1,diagramBagno1,toMergeBagno1)
 hpcBa1 = SKEL_1(STRUCT(MKPOLS(masterBagno1)))
 hpcBa1 = cellNumbering (masterBagno1,hpcBa1)(range(len(masterBagno1[1])),CYAN,2)
@@ -195,7 +205,7 @@ hpcCorridoio = cellNumbering (diagramCorridoio,hpcCorridoio)(range(len(CVCorrido
 #PORTA CORRIDOIO
 
 toMergeCorridoio = 3
-diagramDoorCorridoio = assemblyDiagramInit([1,3,2])([[.1],[.1,.8,.1],[2.2,.1]])
+diagramDoorCorridoio = assemblyDiagramInit([1,3,2])([[.1],[.1,.8,.1],[2.2,.5]])
 masterCorridoio = diagram2cell(diagramDoorCorridoio,diagramCorridoio,toMergeCorridoio)
 hpcCor = SKEL_1(STRUCT(MKPOLS(masterCorridoio)))
 hpcCor = cellNumbering (masterCorridoio,hpcCor)(range(len(masterCorridoio[1])),CYAN,2)
@@ -216,7 +226,7 @@ hpcIngresso = cellNumbering(diagramIngresso,hpcIngresso)(range(len(CVIngresso)),
 
 toMergeIngresso = 11
 
-diagramDoorIngresso = assemblyDiagramInit([3,1,2])([[1.5,1,1.5],[.1],[2.2,.1]])
+diagramDoorIngresso = assemblyDiagramInit([3,1,2])([[1.5,1,1.5],[.1],[2.2,.5]])
 masterIngresso = diagram2cell(diagramDoorIngresso,diagramIngresso,toMergeIngresso)
 hpcIng = SKEL_1(STRUCT(MKPOLS(masterIngresso)))
 hpcIng = cellNumbering (masterIngresso,hpcIng)(range(len(masterIngresso[1])),CYAN,2)
@@ -235,7 +245,7 @@ hpcBagno2 = cellNumbering(diagramBagno2,hpcBagno2)(range(len(CVBagno2)),CYAN,2)
 
 #PORTA BAGNO 2
 toMergeBagno2 = 7
-diagramDoorBagno2 = assemblyDiagramInit([3,1,2])([[.5,1,.5],[.1],[2.2,.1]])
+diagramDoorBagno2 = assemblyDiagramInit([3,1,2])([[.5,1,.5],[.1],[2.2,.5]])
 masterBagno2 = diagram2cell(diagramDoorBagno2,diagramBagno2,toMergeBagno2)
 hpcBa2 = SKEL_1(STRUCT(MKPOLS(masterBagno2)))
 hpcBa2 = cellNumbering (masterBagno2,hpcBa2)(range(len(masterBagno2[1])),CYAN,2)
@@ -258,23 +268,11 @@ masterWinBagno2 = masterWinBagno2[0], [cell for k,cell in enumerate(masterWinBag
 #ANTIBAGNO
 
 
-diagramAnti = assemblyDiagramInit([3,3,2])([[.3,2,.1],[.1,1,.1],[.3,2.7]])
-hpcAnti = SKEL_1(STRUCT(MKPOLS(diagramAnti)))
-VAnti, CVAnti = diagramAnti
-hpcAnti = cellNumbering(diagramAnti,hpcAnti)(range(len(CVAnti)),CYAN,1)
+masterAnti = assemblyDiagramInit([3,3,2])([[.3,2,.1],[.1,1,.1],[.3,2.7]])
+hpcAnti = SKEL_1(STRUCT(MKPOLS(masterAnti)))
+VAnti, CVAnti = masterAnti
+hpcAnti = cellNumbering(masterAnti,hpcAnti)(range(len(CVAnti)),CYAN,1)
 #VIEW(hpcAnti)
-
-toMergeAnti = 7
-
-diagramDoorAnti = assemblyDiagramInit([3,1,2])([[.5,1,.5],[.1],[2.2,.1]])
-masterAnti = diagram2cell(diagramDoorAnti,diagramAnti,toMergeAnti)
-hpcAn = SKEL_1(STRUCT(MKPOLS(masterAnti)))
-hpcAn = cellNumbering (masterAnti,hpcAnti)(range(len(masterAnti[1])),CYAN,1)
-#VIEW(hpcAn)
-
-toRemoveAnti = [19,8]
-masterAnti = masterAnti[0], [cell for k,cell in enumerate(masterAnti[1]) if not (k in toRemoveAnti)]
-#DRAW(masterAnti)
 
 
 
@@ -309,6 +307,7 @@ hpcMasterCook = SKEL_1(STRUCT(MKPOLS(masterCook)))
 hpcMasterCook = cellNumbering (masterCook,hpcMasterCook)(range(len(masterCook[1])),CYAN,2)
 #VIEW(hpcMasterCook)
 
+
 #taglio x camere da letto
 cut2 = assemblyDiagramInit([2,1,1])([[3,4],[5],[3]])
 toMerge = 0
@@ -320,7 +319,7 @@ hpcCut2 = cellNumbering (masterCut2,hpcCut2)(range(len(masterCut2[1])),CYAN,2)
 
 #inserisco camera 1
 
-toMergeRoom1 = 83
+toMergeRoom1 = 87
 masterRoom1 = diagram2cell(masterWinCam1, masterCut2, toMergeRoom1)
 hpcMasterRoom1 = SKEL_1(STRUCT(MKPOLS(masterRoom1)))
 hpcMasterRoom1 = cellNumbering (masterRoom1,hpcMasterRoom1)(range(len(masterRoom1[1])),CYAN,2)
@@ -329,11 +328,12 @@ hpcMasterRoom1 = cellNumbering (masterRoom1,hpcMasterRoom1)(range(len(masterRoom
 
 #inserisco camera 2
 
-toMergeRoom2 = 82
+toMergeRoom2 = 86
 masterRoom2 = diagram2cell(masterWinCam2, masterRoom1, toMergeRoom2)
 hpcMasterRoom2 = SKEL_1(STRUCT(MKPOLS(masterRoom2)))
 hpcMasterRoom2 = cellNumbering (masterRoom2,hpcMasterRoom2)(range(len(masterRoom2[1])),CYAN,2)
 #VIEW(hpcMasterRoom2)
+
 
 #taglio x bagno1 e corridoio
 
@@ -347,7 +347,7 @@ hpcCutX = cellNumbering (masterCutX,hpcCutX)(range(len(masterCutX[1])),CYAN,2)
 
 
 cut3 = assemblyDiagramInit([1,2,1])([[4],[1,2],[3]])
-toMerge = 147
+toMerge = 151
 masterCut3 = diagram2cell(cut3,masterCutX,toMerge)
 hpcCut3 = SKEL_1(STRUCT(MKPOLS(masterCut3)))
 hpcCut3 = cellNumbering (masterCut3,hpcCut3)(range(len(masterCut3[1])),CYAN,2)
@@ -355,7 +355,7 @@ hpcCut3 = cellNumbering (masterCut3,hpcCut3)(range(len(masterCut3[1])),CYAN,2)
 
 #inserisco bagno 1
 
-toMergeBath1 = 151
+toMergeBath1 = 155
 masterBath1 = diagram2cell(masterWinBagno1,masterCut3,toMergeBath1)
 hpcMasterBath1 = SKEL_1(STRUCT(MKPOLS(masterBath1)))
 hpcMasterBath1 = cellNumbering (masterBath1,hpcMasterBath1)(range(len(masterBath1[1])),CYAN,2)
@@ -363,7 +363,7 @@ hpcMasterBath1 = cellNumbering (masterBath1,hpcMasterBath1)(range(len(masterBath
 
 
 #inserisco corridoio
-toMergeCorridor = 150
+toMergeCorridor = 154
 masterCorridor = diagram2cell(masterCorridoio,masterBath1,toMergeCorridor)
 hpcMasterCorridor = SKEL_1(STRUCT(MKPOLS(masterCorridor)))
 hpcMasterCorridor = cellNumbering (masterCorridor,hpcMasterCorridor)(range(len(masterCorridor[1])),CYAN,2)
@@ -387,56 +387,153 @@ hpcCut4 = cellNumbering (masterCut4,hpcCut4)(range(len(masterCut4[1])),CYAN,2)
 #VIEW(hpcCut4)
 
 #inserisco bagno2
-toMergeBath2 = 224
+toMergeBath2 = 228
 masterBath2 = diagram2cell(masterWinBagno2,masterCut4,toMergeBath2)
 hpcMasterBath2 = SKEL_1(STRUCT(MKPOLS(masterBath2)))
 hpcMasterBath2 = cellNumbering (masterBath2,hpcMasterBath2)(range(len(masterBath2[1])),CYAN,.5)
 #VIEW(hpcMasterBath2)
 
 #inserisco antibagno
-toMergePre = 223
+toMergePre = 227
 masterPre = diagram2cell(masterAnti, masterBath2, toMergePre)
 hpcMasterPre = SKEL_1(STRUCT(MKPOLS(masterPre)))
-hpcMasterPre = cellNumbering (masterPre,hpcMasterPre)(range(len(masterPre[1])),CYAN,.2)
+hpcMasterPre = cellNumbering (masterPre,hpcMasterPre)(range(len(masterPre[1])),CYAN,.5)
 #VIEW(hpcMasterPre)
 
 #rimuovo le celle in eccesso e i solai
-toRemoveEnd = [146,145,147,45,224,223,94,187,190,209,205,215,267]
+toRemoveEnd = [149,45,150,151,271,227,228,213,269,209,273,219,191,194,119,86,52]
 masterEnd = masterPre[0], [cell for k,cell in enumerate(masterPre[1]) if not (k in toRemoveEnd)]
 hpcMasterEnd = SKEL_1(STRUCT(MKPOLS(masterEnd)))
-hpcMasterEnd = cellNumbering (masterEnd,hpcMasterEnd)(range(len(masterEnd[1])),CYAN,2)
+hpcMasterEnd = cellNumbering (masterEnd,hpcMasterEnd)(range(len(masterEnd[1])),CYAN,.5)
 
 #VIEW(hpcMasterEnd)
 #DRAW(masterEnd)
 
+#Porta generica
+doorExt = COLOR([0.58823529411,0.29411764705,0])(CUBOID([0.9,0.3,2.2]))
+handle1 = T([1,2,3])([0.7,-0.1,0.75])(CUBOID([0.03,0.1,0.03]))
+handle2 = T([1,2,3])([0.55,-0.1,0.75])(CUBOID([0.2,0.03,0.03]))
+handle = STRUCT([handle1,handle2])
+
+#Porta d'ingresso
+portaIngresso = STRUCT([doorExt,COLOR(BROWN)(handle)])
+portaIngressoT = R([1,2])(PI)(portaIngresso)
+portaIngressoT2 = (T([1,2,3])([6.2,8.5,.3])(portaIngressoT))
+
+#Porta cucina
+doorCook = COLOR([0.58823529411,0.29411764705,0])(CUBOID([0.1,1.1,2.2]))
+doorCook1 = STRUCT([doorCook,R([1,2])(PI/2)(T([1,2,3])([0.1,-0.1,0.2])(handle))])
+portaCucinaT2 = (T([1,2,3])([3.9,5.6,.3])(doorCook1))
+
+#Porta corridoio
+doorCorridor = COLOR([0.58823529411,0.29411764705,0])(CUBOID([0.1,0.8,2.2]))
+doorCorridor1 = STRUCT([doorCorridor,R([1,2])(PI/2)(T([1,2,3])([-0.1,-0.1,0.2])(handle))])
+portaCorridoioT = (T([1,2,3])([7.5,5.2,.3])(doorCorridor1))
+
+#Porta camera 2
+doorRoom2 = COLOR([0.58823529411,0.29411764705,0])(CUBOID([1.1,0.1,2.2]))
+portaCamera2 = STRUCT([doorRoom2,handle])
+portaCamera2 = R([1,2])(PI)(portaCamera2)
+portaCamera2T = (T([1,2,3])([10.25,5,.3])(portaCamera2))
+
+#porta bagno1
+doorBath1 = COLOR([0.58823529411,0.29411764705,0])(CUBOID([1.1,0.1,2.2]))
+portaBagno1 = STRUCT([doorBath1,handle])
+portaBagno1 = R([1,2])(2*PI)(portaBagno1)
+portaBagno1T = (T([1,2,3])([9.15,6.15,.3])(portaBagno1))
+
+#porta camera 1
+doorRoom1 = COLOR([0.58823529411,0.29411764705,0])(CUBOID([1.1,0.1,2.2]))
+portaCamera1 = STRUCT([doorRoom1,handle])
+portaCamera1 = R([1,2])(PI)(portaCamera1)
+portaCamera1T = (T([1,2,3])([11.95,5,.3])(portaCamera1))
+
+#porta antibagno
+doorAnti = COLOR([0.58823529411,0.29411764705,0])(CUBOID([1.1,0.1,2.2]))
+portaAnti1 = STRUCT([doorAnti,handle])
+portaAnti1 = R([1,2])(2*PI)(portaAnti1)
+portaAnti1T = (T([1,2,3])([0.4,8.4,.3])(portaAnti1))
+
+
+#porta bagno2
+doorBath2 = COLOR([0.58823529411,0.29411764705,0])(CUBOID([1.1,0.1,2.2]))
+portaBagno2 = STRUCT([doorBath2,handle])
+portaBagno2 = R([1,2])(2*PI)(portaBagno2)
+portaBagno2T = (T([1,2,3])([0.4,9.65,.3])(portaBagno2))
+
+doors = STRUCT([portaIngressoT2, portaCucinaT2, portaCorridoioT, portaCamera2T, portaBagno1T, portaCamera1T, portaAnti1T, portaBagno2T])
+
+
+
+#finestre
+windowSouth = T(2)(0.05)(CUBOID([15,.01,3]))
+windowNorth = T(2)(8.4)(CUBOID([11,.01,3]))
+windowEast = T(1)(15.2)(CUBOID([.01,4,3]))
+windowWest = T(1)(.2)(CUBOID([.01,11,3]))
+
+windows = STRUCT([windowSouth,windowNorth, windowEast, windowWest])
+
+
+#balconi
+pavimento1 = CUBOID([1.5,11,.3])
+pavimento2 = T(1)(1.5)(CUBOID([14,1.5,.3]))
+
+muretto1 = CUBOID([0.2,11,.8])
+muretto2 = T(1)(.2)(CUBOID([15.3,.2,.8]))
+muretto3 = T(2)(11)(CUBOID([1.5,.2,1.4]))
+muretto4 = T(1)(15.3)(CUBOID([.2,1.5,1.4]))
+
+
+ringhiera1 = T(3)(1.2)(CUBOID([0.2,11,.1])) 
+ringhiera2 = T([1,3])([.2,1.2])(CUBOID([15.3,.2,.1]))
+
+pioli1 = T([1,3])([.05,.8])(CYLINDER([.1,.4])(32))
+pioli1T = STRUCT([pioli1,T(2)(1.2)]*10)
+pioli2 = T([2,3])([.05,.8])(CYLINDER([.1,.4])(32))
+pioli2T = STRUCT([pioli2,T(1)(1.2)]*13)
+
+balconi = STRUCT([COLOR(GRAY)(pavimento1),COLOR(GRAY)(pavimento2),(muretto1), (muretto2),(muretto3),(muretto4),COLOR(GRAY)(ringhiera1), COLOR(GRAY)(ringhiera2), COLOR(BLACK)(pioli1T), COLOR(BLACK)(pioli2T)])
+
+
+hpc = STRUCT(MKPOLS(masterEnd))
+
+dwellingA = STRUCT([hpc, doors, COLOR(CYAN)(windows), T([1,2])([-1.5,-1.5])(balconi)])
+VIEW(dwellingA)
+
+
 
 #ES 2
 
+dwellingBaseA = STRUCT([hpc, doors, COLOR(CYAN)(windows)])
+dwellingBaseB = T(1)(15.3)(T(2)(20)(R([1,2])(PI)(dwellingBaseA)))
+modelBase = STRUCT([dwellingBaseA,dwellingBaseB])
+dwellingB = T(1)(15.3)(T(2)(20)(R([1,2])(PI)(dwellingA)))
 
-dwllingA = (STRUCT(MKPOLS(masterEnd)))
-dwellingB = T(1)(15.3)(T(2)(20)(R([1,2])(PI)(dwllingA)))
+modelFloor = T(3)(3)(STRUCT([dwellingA,dwellingB]))
 
-modelFloor = STRUCT([dwllingA,dwellingB])
-
-modelBuilding = STRUCT([modelFloor,T(3)(3)]*5)
-
+modelBuilding = STRUCT([modelFloor,T(3)(3)]*4)
+modelBuildingF = STRUCT([modelBuilding,modelBase])
 #VIEW(modelBuilding)
 
+#top porta
 controlpoints = [[1,1],[1,2],[2,2],[2,1]]
 dom = larDomain([32])
 mapping = larBezierCurve(controlpoints)
 obj = larMap(mapping)(dom)
 door = (STRUCT( MKPOLS(obj) + [POLYLINE(controlpoints)] ))
 
+#porta
 doorSol = SOLIDIFY(door)
 doorR = R([3,1])(PI/2)(doorSol)
 doorR2 = R([2,3])(PI/2)(doorR)
 doorBack = CUBOID([.1,1,1.2])
 
+porta = STRUCT([(T([1,2])([15.3,5.2])(doorR2)),T([1,2])([15.2,6.2])(doorBack)])
+
 facade = CUBOID([0.3,3.5,15])
 facadeEast = T([1,2])([15,5])(facade)
 facadeWest = T(2)(11.5)(facade)
-#VIEW(STRUCT([modelBuilding,COLOR(BROWN)(topTop), COLOR(CYAN)(facadeTop), COLOR(CYAN)(facadeTop2)]))
+facadeF = (STRUCT([modelBuildingF, facadeWest, facadeEast]))
 
 
 #FUNZIONE GENERA SCALA#
@@ -451,7 +548,21 @@ def spiralStair(thickness=0.2,R=1.,r=0.5,riser=0.1,pitch=2.,nturns=2.,steps=18):
             for k in range(nsteps)]
     return W,CW
 
+
+
 stair = STRUCT(MKPOLS(spiralStair(0.2,1,0.5,0.1,2,12.5,18)))
 stairR = R([1,2])(PI)(stair)
-VIEW(STRUCT([modelBuilding, COLOR(CYAN)(facadeEast), COLOR(CYAN)(facadeWest), T([1,2])([5.5,9.5])(stairR),T([1,2])([9.8,10.5])(stair),COLOR(BROWN)(T([1,2])([15.3,5.2])(doorR2)), COLOR(BROWN)(T([1,2])([15.2,6.2])(doorBack))]))
+
+scale = STRUCT([T([1,2])([5.5,9.5])(stairR),T([1,2])([9.8,10.5])(stair)])
+#base
+base = CUBOID([15,20,0.01])
+trombaScale1 = T([1,2])([5.5,9.5])(CYLINDER([1.5,.01])(16))
+trombaScale2 = T([1,2])([9.8,10.5])(CYLINDER([1.5,.01])(16))
+baseplus = DIFFERENCE([base,trombaScale1])
+baseplus2 = DIFFERENCE([baseplus,trombaScale2 ])
+baseF = STRUCT([baseplus2,T(3)(3)]*5)
+
+horz = STRUCT([baseF,T(3)(15)(base),base])
+
+VIEW(STRUCT([COLOR(GRAY)(horz),facadeF, scale,COLOR([0.58823529411,0.29411764705,0])(porta)]))
 
