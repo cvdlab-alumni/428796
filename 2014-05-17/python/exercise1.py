@@ -405,7 +405,7 @@ masterEnd = masterPre[0], [cell for k,cell in enumerate(masterPre[1]) if not (k 
 hpcMasterEnd = SKEL_1(STRUCT(MKPOLS(masterEnd)))
 hpcMasterEnd = cellNumbering (masterEnd,hpcMasterEnd)(range(len(masterEnd[1])),CYAN,.5)
 
-#VIEW(hpcMasterEnd)
+VIEW(hpcMasterEnd)
 #DRAW(masterEnd)
 
 #Porta generica

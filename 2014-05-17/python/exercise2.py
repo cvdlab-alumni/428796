@@ -562,7 +562,7 @@ baseplus = DIFFERENCE([base,trombaScale1])
 baseplus2 = DIFFERENCE([baseplus,trombaScale2 ])
 baseF = STRUCT([baseplus2,T(3)(3)]*5)
 
-horz = STRUCT([baseF,T(3)(15)(base),base])
+horz = STRUCT([baseF,base])
 
 VIEW(STRUCT([COLOR(GRAY)(horz),facadeF, scale,COLOR([0.58823529411,0.29411764705,0])(porta)]))
 
