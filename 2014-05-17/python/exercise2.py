@@ -553,16 +553,56 @@ def spiralStair(thickness=0.2,R=1.,r=0.5,riser=0.1,pitch=2.,nturns=2.,steps=18):
 stair = STRUCT(MKPOLS(spiralStair(0.2,1,0.5,0.1,2,12.5,18)))
 stairR = R([1,2])(PI)(stair)
 
-scale = STRUCT([T([1,2])([5.5,9.5])(stairR),T([1,2])([9.8,10.5])(stair)])
-#base
+scale = STRUCT([T([1,2])([3.5,9.5])(stairR),T([1,2])([11.8,10.5])(stair)])
+#pianerottoli
 base = CUBOID([15,20,0.01])
-trombaScale1 = T([1,2])([5.5,9.5])(CYLINDER([1.5,.01])(16))
-trombaScale2 = T([1,2])([9.8,10.5])(CYLINDER([1.5,.01])(16))
+trombaScale1 = T([1,2])([3.5,9.5])(CYLINDER([1.1,.01])(64))
+trombaScale2 = T([1,2])([11.8,10.5])(CYLINDER([1.1,.01])(64))
+trombaAscensore = T([1,2])([6.6,9])(CUBOID([2.5,2,.01]))
 baseplus = DIFFERENCE([base,trombaScale1])
-baseplus2 = DIFFERENCE([baseplus,trombaScale2 ])
+baseplusX = DIFFERENCE([baseplus,trombaScale2 ])
+baseplus2 = DIFFERENCE([baseplusX,trombaAscensore ])
 baseF = STRUCT([baseplus2,T(3)(3)]*5)
 
-horz = STRUCT([baseF,base])
+horz = STRUCT([baseF,T(3)(15)(base),base]) 
 
-VIEW(STRUCT([COLOR(GRAY)(horz),facadeF, scale,COLOR([0.58823529411,0.29411764705,0])(porta)]))
+
+#ascensore
+diagramElevator = assemblyDiagramInit([3,3,3])([[.1,2,.1],[.1,1.6,.1],[.3,2.5,.2]])
+hpcElevator = SKEL_1(STRUCT(MKPOLS(diagramElevator)))
+hpcElevator = cellNumbering (diagramElevator,hpcElevator)(range(len(diagramElevator[1])),CYAN,2)
+
+
+#Porte ascensore
+toMerge = 10
+
+diagramDoorEl = assemblyDiagramInit([3,1,2])([[.5,1,.5],[.5],[2.3,.5]])
+masterEl = diagram2cell(diagramDoorEl,diagramElevator,toMerge)
+hpcElevator = SKEL_1(STRUCT(MKPOLS(masterEl)))
+hpcElevator = cellNumbering (masterEl,hpcElevator)(range(len(masterEl[1])),CYAN,2)
+
+toRemove = [28,12]
+masterEl = masterEl[0], [cell for k,cell in enumerate(masterEl[1]) if not (k in toRemove)]
+hpcElevator = SKEL_1(STRUCT(MKPOLS(masterEl)))
+hpcElevator = cellNumbering (masterEl,hpcElevator)(range(len(masterEl[1])),CYAN,2)
+
+
+toMerge = 14
+diagramDoorEl = assemblyDiagramInit([3,1,2])([[.5,1,.5],[.5],[2.3,.5]])
+masterEl = diagram2cell(diagramDoorEl,masterEl,toMerge)
+hpcElevator = SKEL_1(STRUCT(MKPOLS(masterEl)))
+hpcElevator = cellNumbering (masterEl,hpcElevator)(range(len(masterEl[1])),CYAN,2)
+
+toRemove = [31]
+masterEl = masterEl[0], [cell for k,cell in enumerate(masterEl[1]) if not (k in toRemove)]
+hpcElevator = STRUCT(MKPOLS(masterEl))
+
+#cavi ascensore
+cavo1 = T([1,2,3])([.8,.9,3])(CYLINDER([.05,12])(64))
+cavo2 = T([1,2,3])([1.5,.9,3])(CYLINDER([.05,12])(64))
+
+elevator = STRUCT([hpcElevator, COLOR(BLACK)(cavo1), COLOR(BLACK)(cavo2)])
+
+
+VIEW(STRUCT([COLOR(GRAY)(horz),facadeF, scale,COLOR([0.58823529411,0.29411764705,0])(porta), T([1,2])([6.75,9.1])(elevator)]))
 
