@@ -603,6 +603,20 @@ cavo2 = T([1,2,3])([1.5,.9,3])(CYLINDER([.05,12])(64))
 
 elevator = STRUCT([hpcElevator, COLOR(BLACK)(cavo1), COLOR(BLACK)(cavo2)])
 
+#Grondaie
 
-VIEW(STRUCT([COLOR(GRAY)(horz),facadeF, scale,COLOR([0.58823529411,0.29411764705,0])(porta), T([1,2])([6.75,9.1])(elevator)]))
+gutter = (CYLINDER([.1,14.5])(64))
+gutter2 = (CYLINDER([.08,14.5])(64))
+gutter = DIFFERENCE([gutter,gutter2])
+gutter = STRUCT([T([1,2,3])([-.1,11.5,.5])(gutter), T([1,2,3])([15.5,5,.5])(gutter)])
+
+#antenne
+antenna = ((CYLINDER([.5,.05])(64)))
+pole = (CYLINDER([.05,1])(64))
+antenna = (R([3,1])(PI/2)(antenna))
+antenna = STRUCT([T([1,3])([.05,1])(antenna), pole])
+antennas = STRUCT([T([1,2,3])([4,2,15])(antenna), T([1,2,3])([7,5,15])(antenna), T([1,2,3])([9,10,15])(antenna), T([1,2,3])([12,18,15])(antenna)])
+
+
+VIEW(STRUCT([COLOR(GRAY)(horz),facadeF, scale,COLOR([0.58823529411,0.29411764705,0])(porta), T([1,2])([6.75,9.1])(elevator), COLOR(BLACK)(gutter), antennas]))
 

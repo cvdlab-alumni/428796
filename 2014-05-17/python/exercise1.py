@@ -416,11 +416,12 @@ handle = STRUCT([handle1,handle2])
 
 
 #Porta d'ingresso
-portaIngresso = STRUCT([doorExt,COLOR(BROWN)(handle)])
+portaIngresso = STRUCT([doorExt,COLOR(BROWN)(handle),R([2,1])(PI)(handle)])
 portaIngressoT = R([1,2])(PI)(portaIngresso)
 portaIngressoT2 = (T([1,2,3])([6.2,8.5,.3])(portaIngressoT))
 
 VIEW(portaIngressoT2)
+
 #Porta cucina
 doorCook = COLOR([0.58823529411,0.29411764705,0])(CUBOID([0.1,1.1,2.2]))
 doorCook1 = STRUCT([doorCook,R([1,2])(PI/2)(T([1,2,3])([0.1,-0.1,0.2])(handle))])
