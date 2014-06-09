@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html>
+ <head> 
+  <title>Luxo Jr.</title> 
+  <style>
+    body{
+      margin: 0;
+      overflow: hidden;
+    }
+
+    #stats {  /* Align stats top-left */
+      position: absolute;
+      left: 0px;
+      top: 0px;
+    }
+  </style> 
+  </head>
+  <body>  
+    <!-- JavaScript libraries -->
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> 
+<script src="http://cdnjs.cloudflare.com/ajax/libs/three.js/r67/three.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/stats.js/r11/Stats.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.5/dat.gui.min.js"></script>
+<script type="text/javascript" src="libs/fonts/helvetiker_regular.typeface.js"></script> 
+<script type="text/javascript" src="libs/fonts/helvetiker_bold.typeface.js"></script> 
+<script type="text/javascript" src="libs/fonts/bitstream_vera_sans_mono_roman.typeface.js"></script>
+<script src="libs/assets/tween.min.js"></script>
+<script src="libs/assets/TrackballControls.js"></script>
+<script src="libs/assets/builders.js"></script>
+    <!-- Javascript code that runs our Three.js examples --> 
+    <script>
+      // once everything is loaded, we run our Three.js stuff.
+      $(function () {
+        var axisHelper = new THREE.AxisHelper( 5 );
+        var stats = initStats();
+        var scene = new THREE.Scene();
+        var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        var trackballControls = new THREE.TrackballControls(camera);
+        var renderer = new THREE.WebGLRenderer();
+
+        renderer.setClearColor(new THREE.Color(0xb2b2b2, 1.0));
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.shadowMapEnabled = true;
+
+        var deskParameters = {
+          width:20,
+          depth:10,
+          height:0.5,
+          segmentWidth:20,
+          segmentDepth:20,
+          segmentHeight:20,
+          colore:'#C6A664'
+        };
+
+        var legParameters = {
+          radiusTop:0.5,
+          radiusBottom:0.5,
+          height:5,
+          radiusSegments:20,
+          heightSegments:20,
+          colore:'#C6A664'
+        };
+
+        var tavolo = tableBuilder(deskParameters.width,deskParameters.depth,deskParameters.height,deskParameters.segmentWidth,deskParameters.segmentDepth,deskParameters.segmentHeight,deskParameters.colore,legParameters.radiusTop,legParameters.radiusBottom,legParameters.height,legParameters.radiusSegments, legParameters.heightSegments, legParameters.colore);
+        tavolo.position.x = -deskParameters.width/2;
+        tavolo.position.y = -deskParameters.depth/2;
+        tavolo.position.z = -deskParameters.height/2 - legParameters.height;
+        scene.add(tavolo);
+
+        var baseParameters = {
+            radiusTop: 1,
+            radiusBottom: 0.5,
+            height: 0.5,
+            radiusSegments: 20,
+            heightSegments: 20,
+            colore: '#C6C6C6'
+        };
+
+        var base = baseBuilder(baseParameters.radiusTop, baseParameters.radiusBottom, baseParameters.height,baseParameters.radiusSegments,baseParameters.heightSegments,baseParameters.colore,legParameters.height + deskParameters.height - baseParameters.height, deskParameters.width, deskParameters.depth);
+        base.castShadow = true;
+        base.receiveShadow = true;
+        base.position.set(0,0,0);
+
+        var jointParameters = {
+          radius: 0.15,
+          widthSegment: 20,
+          heightSegment: 20,
+          color: '#c6c6c6'
+        };
+
+        var lowJoint = jointBuilder(jointParameters.radius, jointParameters.widthSegment, jointParameters.heightSegment, jointParameters.color);
+        lowJoint.castShadow = true;
+        lowJoint.receiveShadow = true;
+        base.add(lowJoint);
+
+        var squaredBaseParameters = {
+          side1: 0.5,
+          side2: 0.5,
+          colore: '#000000'
+        };
+        
+        var sqLowBase = squaredBaseBuilder(squaredBaseParameters.side1,squaredBaseParameters.side2, squaredBaseParameters.colore);
+        sqLowBase.castShadow = true;
+        sqLowBase.receiveShadow = true;
+        lowJoint.add(sqLowBase);
+
+        var armParameters = {
+          radiusTop:0.05,
+          radiusBottom:0.05,
+          height:2,
+          radiusSegments:20,
+          heightSegments:20,
+          colore:'#c6c6c6'
+        };
+
+        var arms = armBuilder(armParameters.radiusTop, armParameters.radiusBottom, armParameters.height, armParameters.radiusSegments, armParameters.heightSegments, armParameters.colore);
+        arms.castShadow = true;
+        arms.receiveShadow = true;
+
+        sqLowBase.add(arms);
+
+        var sqMidBase = squaredMiddleBaseBuilder(squaredBaseParameters.side1,squaredBaseParameters.side2, squaredBaseParameters.colore);
+        sqMidBase.castShadow = true;
+        sqMidBase.receiveShadow = true;
+
+        arms.add(sqMidBase);
+
+        var midJoint = upJointBuilder(jointParameters.radius, jointParameters.widthSegment, jointParameters.heightSegment, jointParameters.color);
+        midJoint.castShadow = true;
+        midJoint.receiveShadow = true;
+        sqMidBase.add(midJoint);
+
+        var sqLowBase2 = squaredBaseBuilder(squaredBaseParameters.side1,squaredBaseParameters.side2, squaredBaseParameters.colore);
+        sqLowBase2.rotation.x = Math.PI;
+        sqLowBase2.position.set(0,0,-jointParameters.radius);
+        sqLowBase2.castShadow = true;
+        sqLowBase2.receiveShadow = true;
+        midJoint.add(sqLowBase2);
+
+        var upArms = armBuilder(armParameters.radiusTop, armParameters.radiusBottom, armParameters.height, armParameters.radiusSegments, armParameters.heightSegments, armParameters.colore);
+        upArms.castShadow = true;
+        upArms.receiveShadow = true;
+        sqLowBase2.add(upArms);
+
+        var sqMidBase2 = squaredMiddleBaseBuilder(squaredBaseParameters.side1,squaredBaseParameters.side2, squaredBaseParameters.colore);
+        sqMidBase2.castShadow = true;
+        sqMidBase2.receiveShadow = true;
+        upArms.add(sqMidBase2);
+
+
+
+        var upJoint = upJointBuilder(jointParameters.radius, jointParameters.widthSegment, jointParameters.heightSegment, jointParameters.color);
+        upJoint.castShadow = true;
+        upJoint.receiveShadow = true;
+        sqMidBase2.add(upJoint);
+
+        var lampshadowParameters = {
+          radius: 1,
+          phiStart: 0,
+          phiLength: Math.PI,
+          color: '#c6c6c6'
+        };
+
+        var lampShadow = lampShadowBuilder(lampshadowParameters.radius, 32, 32, lampshadowParameters.phiStart, lampshadowParameters.phiLength,lampshadowParameters.color);
+        lampShadow.castShadow = true;
+        lampShadow.receiveShadow = true;
+        upJoint.add(lampShadow);
+
+        var bulbParameters = {
+          radiusTop: 0.1,
+          radiusBottom: 0.1,
+          height: 0.2,
+          color: '#000000'
+        };
+
+        var bulb = bulbBuilder(bulbParameters.radiusTop, bulbParameters.radiusBottom, bulbParameters.height, bulbParameters.color);
+        
+        lampShadow.add(bulb);
+
+        var lampParameters = {
+          radius: 0.5,
+          widthSegments: 32,
+          heightSegments: 32,
+          color: '#ffff00'
+        };
+
+        var lamp = lampBuilder(lampParameters.radius, lampParameters.widthSegments, lampParameters.heightSegments, lampParameters.color);
+        
+
+        lampShadow.add(lamp);
+        scene.add(base);
+
+
+       // add directional light 
+        var directionalLight = new THREE.DirectionalLight(0xffffff,0.5);
+        directionalLight.position.set(1, 1, 1);
+        directionalLight.castShadow =  true;
+        scene.add(directionalLight);
+
+        //scene.add(axisHelper);
+
+        camera.position.set(10,-40,20);
+        camera.up = new THREE.Vector3(0,0,1);
+        camera.lookAt(base.position);
+
+
+
+
+        var spotlight = new THREE.SpotLight(0xff0000, 2);
+        spotlight.position.set(0,0,0);
+        spotlight.shadowCameraNear = 1;
+        spotlight.castShadow = true;
+        spotlight.shadowCameraFar = 10;
+        spotlight.shadowCameraNear = 2;
+        spotlight.angle =3*Math.PI/2;
+        spotlight.shadowCameraVisible = false;
+        spotlight.shadowCameraFov = 70 ;
+        spotlight.shadowDarkness = 0.3;
+
+
+        var spotlight2 = new THREE.SpotLight(0xfffa72, 5);
+        spotlight2.position.set(0,0,0);
+        spotlight2.shadowCameraNear = 1;
+        spotlight2.castShadow = true;
+        spotlight2.shadowCameraFar = 10;
+        spotlight2.shadowCameraNear = 2;
+        spotlight2.angle =3*Math.PI/2;
+        spotlight2.shadowCameraVisible = false;
+        spotlight2.shadowCameraFov = 70 ;
+        spotlight2.shadowDarkness = 0.3;
+        spotlight2.visible = false;
+
+        var lightTarget = new THREE.Object3D();
+        lightTarget.position.set(0,0,-5);
+        lamp.add(lightTarget);
+        spotlight.target = lightTarget;
+        spotlight2.target = lightTarget;
+        
+        var pointLight = new THREE.PointLight(0xff0000, 5, 1.5);
+        pointLight.position.z = -0.8;
+        spotlight.add(pointLight);
+
+        var pointLight2 = new THREE.PointLight(0xfde910, 5, 1.5);
+        pointLight2.position.z = -0.8;
+        pointLight2.visible = false;
+        spotlight2.add(pointLight2);
+
+       
+        
+        lamp.add(spotlight2);
+        lamp.add(spotlight);
+
+        
+        var boxGeometry = new THREE.BoxGeometry(1,1,1,20,20,20);
+  		var boxMaterial = new THREE.MeshPhongMaterial( {color: 0xff0066, shininess: 60} );
+  		var box = new THREE.Mesh(boxGeometry, boxMaterial);
+  		box.castShadow = true;
+  		box.receiveShadow = true;
+  		box.position.set(-2,2,0.5);
+  		scene.add(box);
+
+        var textGeom = new THREE.TextGeometry( 'Luxo Jr.', {font: 'helvetiker', size: 1.2, height: 0.5, weight: 'bold'});
+        var material = new THREE.MeshPhongMaterial({color: 0xffff00, shininess: 150, metal: true});
+
+        var textMesh = new THREE.Mesh( textGeom, material );
+        textMesh.castShadow = false;
+        textMesh.receiveShadow = false;
+        textMesh.position.set(2,-4.2,20);
+        
+        textMesh.rotation.x = Math.PI/2;
+        scene.add(textMesh);
+
+        var material1 = new THREE.MeshPhongMaterial({color: 0x801818, shininess: 150, metal: true});
+        var textGeom1 = new THREE.TextGeometry( 'WALT', {font: 'helvetiker', size: 1, height: 0.1});
+        var textMesh1 = new THREE.Mesh( textGeom1, material1 );
+        textMesh1.castShadow = true;
+        textMesh1.receiveShadow = true;
+        textMesh1.position.set(-9,0.5,20);
+        
+        textMesh1.rotation.x = Math.PI/2;
+        textMesh1.rotation.y = Math.PI/4;
+        scene.add(textMesh1);
+
+        var material2 = new THREE.MeshPhongMaterial({color: 0x801818, shininess: 150, metal: true});
+        var textGeom2 = new THREE.TextGeometry( 'DISNEY', {font: 'helvetiker', size: 1, height: 0.1 });
+        var textMesh2 = new THREE.Mesh( textGeom2, material2 );
+        textMesh2.castShadow = true;
+        textMesh2.receiveShadow = true;
+        textMesh2.position.set(6,4,20);
+        
+        
+        textMesh2.rotation.x = Math.PI/2;
+        textMesh2.rotation.y = -Math.PI/4;
+
+        scene.add(textMesh2);
+
+        $('body').append(renderer.domElement);
+
+        
+
+    
+
+      lowJoint.rotation.y = 1;
+      midJoint.rotation.x = -2;
+      upJoint.rotation.x = -0.2;
+      upJoint.rotation.y = -1;
+
+     
+      var targetS1 = { x : -9, y: 0.5, z:  0}; 
+      var targetS2 = { x : 6, y: 4, z:  0};
+      var targetS3 = { x : 2, y: -4.2, z:  0};
+
+      var tweenS1 = new TWEEN.Tween(textMesh2.position).to(targetS2, 3000).easing(TWEEN.Easing.Bounce.Out).start();
+      var tweenS2 = new TWEEN.Tween(textMesh1.position).to(targetS1, 3000).easing(TWEEN.Easing.Bounce.Out).delay(3000).start();
+        
+      var tween1 = new TWEEN.Tween(midJoint.rotation).to({y: Math.PI,x: -Math.PI/2}, 3000).easing(TWEEN.Easing.Quadratic.InOut).delay(2000).start();
+      var tween2 = new TWEEN.Tween(midJoint.rotation).to({y: 3*Math.PI/2}, 3000).easing(TWEEN.Easing.Quadratic.InOut).delay(5000).start();
+      tween1.chain(tween2);
+      var tween3 = new TWEEN.Tween(upJoint.rotation).to({x: -1, y: 0}, 1000).easing(TWEEN.Easing.Quadratic.InOut).delay(7000).start();
+      tween2.chain(tween3);
+      var tween4 = new TWEEN.Tween(textMesh.position).to(targetS3, 2000).easing(TWEEN.Easing.Bounce.Out).delay(8000).start();
+
+      var targetCam = {x : 6, y: -12, z:  6};
+      var tweenCam = new TWEEN.Tween(camera.position).to(targetCam, 1000).easing(TWEEN.Easing.Quadratic.InOut).delay(10000).start();
+
+      setTimeout(function(){
+         spotlight.visible = false;
+         pointLight.visible = false;
+        ;}
+        ,9500);
+
+      
+      var tweenBounceUp = new TWEEN.Tween(base.position).to({z: 4}, 500).easing(TWEEN.Easing.Linear.None).delay(12500).start();
+      var tweenBounceDown = new TWEEN.Tween(base.position).to({z: 0.25}, 500).easing(TWEEN.Easing.Linear.None).start();
+      tweenBounceUp.chain(tweenBounceDown);
+      var tweenMoveY = new TWEEN.Tween(box.position).to({y: -4.2}, 500).easing(TWEEN.Easing.Linear.None).delay(13500).start();
+      var tweenMoveY = new TWEEN.Tween(box.position).to({x: 1}, 500).easing(TWEEN.Easing.Linear.None).delay(14000).start();
+
+
+      setTimeout(function(){
+         spotlight2.visible = true;
+         pointLight2.visible = true;
+         textMesh.castShadow = true;
+         textMesh.receiveShadow = true;
+         renderer.setClearColor(new THREE.Color(0x003153, 1.0));
+
+        ;}
+        ,13500);
+      
+      setTimeout(function(){
+         textMesh1.visible = false;
+		 textMesh2.visible = false;
+
+        ;}
+        ,13600);
+
+
+ 	  setTimeout(function(){
+         textMesh1.visible = true;
+		 textMesh2.visible = true;
+		 
+        ;}
+        ,13700);
+
+
+ 	   setTimeout(function(){
+         textMesh1.visible = false;
+		 textMesh2.visible = false;
+		 
+        ;}
+        ,13800);
+
+
+ 	    setTimeout(function(){
+         textMesh1.visible = true;
+		 textMesh2.visible = true;
+		 
+        ;}
+        ,13900);
+
+         setTimeout(function(){
+         textMesh1.visible = false;
+		 textMesh2.visible = false;
+		 
+        ;}
+        ,14000);
+
+        var controls = new function () {
+          this.rotationPlane1_X = 0;
+          this.rotationPlane1_Y = 1;
+          this.rotationPlane2_X =1.5;
+          this.rotationPlane2_Y = -1;
+          this.rotationLamp_X = -0.2;
+          this.rotationLamp_Y = 0;
+          this.switch_on_off = true;
+          }
+
+        var gui = new dat.GUI();        
+
+        gui.add(controls, 'rotationPlane1_X', -Math.PI/5, Math.PI/5).onChange(function (e) {
+        lowJoint.rotation.x = e;
+          });
+        gui.add(controls, 'rotationPlane1_Y', -2*Math.PI, 2*Math.PI).onChange(function (e) {
+        lowJoint.rotation.y = e;
+          });
+        
+        gui.add(controls, 'rotationLamp_X', -Math.PI/2, Math.PI/2).onChange(function (e) {
+        upJoint.rotation.x = e;
+          });
+        gui.add(controls, 'rotationLamp_Y', -Math.PI/2, Math.PI/2).onChange(function (e) {
+        upJoint.rotation.y = e;
+          });
+
+        gui.add(controls, 'rotationPlane2_X', -Math.PI/2, Math.PI/2).onChange(function (e) {
+        midJoint.rotation.x = e;
+          });
+        gui.add(controls, 'rotationPlane2_Y', -Math.PI, Math.PI).onChange(function (e) {
+        midJoint.rotation.y = e;
+          });
+        gui.add(controls, 'switch_on_off').onChange(function (e) {
+        spotlight.visible = e;
+        pointLight.visible = e;
+        spotlight2.visible = e;
+        pointLight2.visible = e;
+        textMesh.castShadow = e;
+        textMesh1.castShadow = e;
+        textMesh2.castShadow = e;
+        box.castShadow = e;
+
+
+          });
+        render();
+
+        
+        function render() {
+          stats.update();
+          TWEEN.update();
+          trackballControls.update();
+          requestAnimationFrame(render);
+          renderer.render(scene, camera);
+        }
+
+        function initStats() {
+          var stats = new Stats();
+          stats.setMode(0); 
+          $('body').append(stats.domElement);
+          return stats;
+        }
+      });
+    </script>  
+ </body>
+</html>
